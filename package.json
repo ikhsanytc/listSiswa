@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/feather-icons": "^4.29.4",
     "autoprefixer": "^10.4.19",
+    "daisyui": "^4.10.2",
+    "feather-icons": "^4.29.1",
     "postcss": "^8.4.38",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
