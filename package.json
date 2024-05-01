@@ -10,14 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sequelize/core": "7.0.0-alpha.37",
+    "@sequelize/sqlite3": "7.0.0-alpha.40",
+    "@supabase/supabase-js": "^2.43.0",
     "@types/feather-icons": "^4.29.4",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.10.2",
     "feather-icons": "^4.29.1",
+    "pg-hstore": "^2.3.4",
     "postcss": "^8.4.38",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7",
     "tailwindcss": "^3.4.3"
   },
   "devDependencies": {
