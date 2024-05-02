@@ -1,11 +1,30 @@
 import feather from "feather-icons";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Inputs from "../types/Inputs";
 const Home = () => {
   const nav = useNavigate();
-  const deleteUser = () => {
+  const [users, setUsers] = useState<Inputs[]>([]);
+  useEffect(() => {
+    const databaseJson = localStorage.getItem("data");
+    const database = databaseJson ? JSON.parse(databaseJson) : null;
+    if (Array.isArray(database)) {
+      setUsers(database);
+    }
+  }, []);
+  const deleteUser = (nik: number) => {
     if (confirm("Kamu yakin?")) {
-      alert("ok");
+      const databaseJson = localStorage.getItem("data");
+      const database: [] = databaseJson ? JSON.parse(databaseJson) : [];
+      const indexToDelete = database.findIndex(
+        (item: { nik: number }) => item.nik == nik
+      );
+      if (indexToDelete !== -1) {
+        database.splice(indexToDelete, 1);
+        localStorage.setItem("data", JSON.stringify(database));
+        setUsers(database);
+      }
     }
   };
   return (
@@ -13,7 +32,7 @@ const Home = () => {
       <Navbar />
       <section className="mt-20 flex flex-col gap-4 px-4">
         <h1 className="font-bold text-lg">Halo!</h1>
-        {Array.from({ length: 4 }).map((_, idx) => (
+        {users?.map((data, idx) => (
           <div
             className="bg-slate-300 w-full p-3 rounded-lg flex justify-between active:bg-slate-400 items-center"
             key={idx}
@@ -23,8 +42,8 @@ const Home = () => {
                 dangerouslySetInnerHTML={{ __html: feather.icons.user.toSvg() }}
               ></div>
               <div className="flex flex-col ">
-                <p className="font-semibold">ikhsan</p>
-                <small>12332110219219</small>
+                <p className="font-semibold">{data.CalonPesertaDidik}</p>
+                <small>{data.nik}</small>
               </div>
             </div>
             <div className="flex gap-2">
@@ -37,7 +56,7 @@ const Home = () => {
                   __html: feather.icons.delete.toSvg(),
                 }}
                 className="cursor-pointer"
-                onClick={deleteUser}
+                onClick={() => deleteUser(data.nik)}
               ></div>
             </div>
           </div>

@@ -20,7 +20,7 @@ const Navbar: FC<props> = (props) => {
               onClick={() => nav(`${props?.back}`)}
             ></div>
           )}
-          <h1 className="font-bold">Daftar Siswa</h1>
+          <h1 className="font-bold text-xl">Daftar Siswa</h1>
         </div>
       </nav>
     </>
