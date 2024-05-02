@@ -18,6 +18,7 @@ const Add = () => {
     }
     database.push(data);
     localStorage.setItem("data", JSON.stringify(database));
+    nav("/");
   };
   return (
     <>
