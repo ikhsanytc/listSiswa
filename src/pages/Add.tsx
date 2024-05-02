@@ -4,13 +4,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Inputs from "../types/Inputs";
 const Add = () => {
   const nav = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.table({ data });
+    // console.table({ data });
     const databaseJson = localStorage.getItem("data");
     let database = [];
     if (databaseJson) {
