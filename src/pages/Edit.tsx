@@ -1,49 +1,91 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import Inputs from "../types/Inputs";
-import { useRef, useState } from "react";
-import { Alert } from "flowbite-react";
-import { HiInformationCircle } from "react-icons/hi";
+import { useEffect, useState } from "react";
 
-const Add = () => {
+type params = {
+  nik: string;
+};
+const Edit = () => {
   const nav = useNavigate();
-  const scrollAtas = useRef<HTMLDivElement>(null);
-  const [errorAlert, setErrorAlert] = useState<string | null>();
-  const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // console.table({ data });
-    const databaseJson = localStorage.getItem("data");
-    const database: Inputs[] = databaseJson ? JSON.parse(databaseJson) : [];
-    let duplicate: boolean = false;
-    database.forEach((data1) => {
-      if (data1.email == data.email) {
-        duplicate = true;
-      }
-    });
-    if (!duplicate) {
-      setErrorAlert(null);
-      database.push(data);
+  const { nik } = useParams<params>();
+  const [user, setUser] = useState<Inputs>();
+  const { register, handleSubmit, setValue } = useForm<Inputs>();
+  const databaseJson = localStorage.getItem("data");
+  const database: Inputs[] = databaseJson ? JSON.parse(databaseJson) : null;
+  const indexToEdit = database.findIndex(
+    (item: { nik: number | string }) => item.nik == nik
+  );
+  useEffect(() => {
+    // console.log(indexToEdit);
+    if (indexToEdit !== -1) {
+      setUser(database[indexToEdit]);
+    } else {
+      nav("/");
+    }
+  }, []);
+  setValue("CalonPesertaDidik", user ? user.CalonPesertaDidik : "");
+  setValue("tempatTglLahir", user ? user.tempatTglLahir : "");
+  setValue("jenisKelamin", user ? user.jenisKelamin : "");
+  setValue("agama", user ? user.agama : "");
+  setValue("asalSekolah", user ? user.asalSekolah : "");
+  setValue("npsn", user ? user.npsn : 0);
+  setValue("nisn", user ? user.nisn : 0);
+  setValue("noSeriIjazah", user ? user.noSeriIjazah : 0);
+  setValue("nik", user ? user.nik : 0);
+  setValue("alamat", user ? user.alamat : "");
+  setValue("kodePos", user ? user.kodePos : 0);
+  setValue("rt", user ? user.rt : 0);
+  setValue("rw", user ? user.rw : 0);
+  setValue("kelurahan", user ? user.kelurahan : "");
+  setValue("kecamatan", user ? user.kecamatan : "");
+  setValue("kota", user ? user.kota : "");
+  setValue("noTlp", user ? user.noTlp : 0);
+  setValue("alatTransportasi", user ? user.alatTransportasi : "");
+  setValue("email", user ? user.email : "");
+  setValue("penerimaKps", user ? user.penerimaKps : "");
+  setValue("noKps", user ? user.noKps : 0);
+  setValue("tinggiBadan", user ? user.tinggiBadan : 0);
+  setValue("beratBedan", user ? user.beratBedan : 0);
+  setValue("jarakTempuh", user ? user.jarakTempuh : "");
+  setValue("waktuTempuh", user ? user.waktuTempuh : "");
+  setValue("jenisPrestasi", user ? user.jenisPrestasi : "");
+  setValue("tingkatPres", user ? user.tingkatPres : "");
+  setValue("tahunPres", user ? user.tahunPres : 0);
+  setValue("jenisBeasiswa", user ? user.jenisBeasiswa : "");
+  setValue("sumberBea", user ? user.sumberBea : "");
+  setValue("tahunBea", user ? user.tahunBea : 0);
+  setValue("namaAyah", user ? user.namaAyah : "");
+  setValue("pekerjaanAyah", user ? user.pekerjaanAyah : "");
+  setValue("pendidikanAyah", user ? user.pendidikanAyah : "");
+  setValue("penghasilanAyah", user ? user.penghasilanAyah : "");
+  setValue("noTlpAyah", user ? user.noTlpAyah : 0);
+  setValue("namaIbu", user ? user.namaIbu : "");
+  setValue("pekerjaanIbu", user ? user.pekerjaanIbu : "");
+  setValue("pendidikanIbu", user ? user.pendidikanIbu : "");
+  setValue("penghasilanIbu", user ? user.penghasilanIbu : "");
+  setValue("noTlpIbu", user ? user.noTlpIbu : 0);
+  setValue("namaWali", user ? user.namaWali : "");
+  setValue("pekerjaanWali", user ? user.pekerjaanWali : "");
+  setValue("pendidikanWali", user ? user.pendidikanWali : "");
+  setValue("penghasilanWali", user ? user.penghasilanWali : "");
+  setValue("noTlpWali", user ? user.noTlpWali : 0);
+
+  // console.log(user);
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    if (indexToEdit !== -1) {
+      database[indexToEdit] = data;
       localStorage.setItem("data", JSON.stringify(database));
       nav("/");
-    } else {
-      setErrorAlert("Email sudah di pakai!");
-      scrollAtas.current?.scrollIntoView({ behavior: "smooth" });
     }
   };
+
   return (
     <>
       <Navbar back="/" />
       <form onSubmit={handleSubmit(onSubmit)} className="mt-20 px-4">
-        <div ref={scrollAtas}></div>
-        {errorAlert && (
-          <>
-            <Alert color="failure" icon={HiInformationCircle}>
-              <span>{errorAlert}</span>
-            </Alert>
-            <div className="p-2"></div>
-          </>
-        )}
         <div className="">
           <h1 className="text-xl font-bold underline underline-offset-4">
             Identitas Peserta Didik
@@ -61,6 +103,7 @@ const Add = () => {
               placeholder="CalonPesertaDidik"
               required
               maxLength={255}
+              defaultValue={user?.CalonPesertaDidik}
               {...register("CalonPesertaDidik")}
             />
 
@@ -78,6 +121,7 @@ const Add = () => {
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="tempatTglLahir"
               required
+              defaultValue={user?.tempatTglLahir}
               {...register("tempatTglLahir")}
             />
 
@@ -93,11 +137,10 @@ const Add = () => {
               id="jenisKelamin"
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               required
+              defaultValue={user?.jenisKelamin}
               {...register("jenisKelamin")}
             >
-              <option value="no" defaultChecked>
-                Pilih kelamin
-              </option>
+              <option value="no">Pilih kelamin</option>
               <option value="laki-laki">laki laki</option>
               <option value="perempuan">wanita</option>
             </select>
@@ -114,6 +157,7 @@ const Add = () => {
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               required
               {...register("agama")}
+              defaultValue={user?.agama}
             >
               <option value="no" defaultChecked>
                 Pilih agama
@@ -139,6 +183,7 @@ const Add = () => {
               required
               maxLength={355}
               {...register("asalSekolah")}
+              defaultValue={user?.asalSekolah}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Asal Sekolah
@@ -156,6 +201,7 @@ const Add = () => {
               required
               maxLength={255}
               {...register("npsn")}
+              defaultValue={user?.npsn}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               NPSN
@@ -168,10 +214,12 @@ const Add = () => {
             <input
               type="number"
               id="nisn"
+              readOnly
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="nisn"
               required
               maxLength={255}
+              defaultValue={user?.nisn}
               {...register("nisn")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -189,6 +237,7 @@ const Add = () => {
               placeholder="noSeriIjazah"
               maxLength={255}
               required
+              defaultValue={user?.noSeriIjazah}
               {...register("noSeriIjazah")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -206,6 +255,7 @@ const Add = () => {
               placeholder="nik"
               maxLength={355}
               required
+              defaultValue={user?.nik}
               {...register("nik")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -227,6 +277,7 @@ const Add = () => {
               placeholder="alamat"
               required
               maxLength={500}
+              defaultValue={user?.alamat}
               {...register("alamat")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -244,6 +295,7 @@ const Add = () => {
               placeholder="kodePos"
               required
               maxLength={255}
+              defaultValue={user?.kodePos}
               {...register("kodePos")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -260,6 +312,7 @@ const Add = () => {
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="rt"
               required
+              defaultValue={user?.rt}
               maxLength={255}
               {...register("rt")}
             />
@@ -278,6 +331,7 @@ const Add = () => {
               placeholder="rw"
               required
               maxLength={255}
+              defaultValue={user?.rw}
               {...register("rw")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -295,6 +349,7 @@ const Add = () => {
               placeholder="kelurahan"
               required
               maxLength={255}
+              defaultValue={user?.kelurahan}
               {...register("kelurahan")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -312,6 +367,7 @@ const Add = () => {
               placeholder="kecamatan"
               required
               maxLength={255}
+              defaultValue={user?.kecamatan}
               {...register("kecamatan")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -329,6 +385,7 @@ const Add = () => {
               placeholder="kota"
               required
               maxLength={255}
+              defaultValue={user?.kota}
               {...register("kota")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -347,6 +404,7 @@ const Add = () => {
               placeholder="noTlp"
               required
               maxLength={255}
+              defaultValue={user?.noTlp}
               {...register("noTlp")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -364,6 +422,7 @@ const Add = () => {
               placeholder="alatTransportasi"
               required
               maxLength={255}
+              defaultValue={user?.alatTransportasi}
               {...register("alatTransportasi")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -381,6 +440,7 @@ const Add = () => {
               placeholder="email"
               required
               maxLength={355}
+              defaultValue={user?.email}
               {...register("email")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -398,6 +458,7 @@ const Add = () => {
               placeholder="penerimaKps"
               required
               maxLength={255}
+              defaultValue={user?.penerimaKps}
               {...register("penerimaKps")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -415,6 +476,7 @@ const Add = () => {
               placeholder="noKps"
               required
               maxLength={255}
+              defaultValue={user?.noKps}
               {...register("noKps")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -432,6 +494,7 @@ const Add = () => {
               placeholder="tinggiBadan"
               required
               maxLength={255}
+              defaultValue={user?.tinggiBadan}
               {...register("tinggiBadan")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -449,6 +512,7 @@ const Add = () => {
               placeholder="beratBedan"
               required
               maxLength={255}
+              defaultValue={user?.beratBedan}
               {...register("beratBedan")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -466,6 +530,7 @@ const Add = () => {
               placeholder="jarakTempuh"
               maxLength={255}
               {...register("jarakTempuh")}
+              defaultValue={user?.jarakTempuh}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Jarak Tempuh Tinggal Ke Sekolah
@@ -482,6 +547,7 @@ const Add = () => {
               placeholder="waktuTempuh"
               maxLength={255}
               {...register("waktuTempuh")}
+              defaultValue={user?.waktuTempuh}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Waktu Tempuh Tinggal Ke Sekolah
@@ -501,6 +567,7 @@ const Add = () => {
               placeholder="jenisPrestasi"
               maxLength={255}
               {...register("jenisPrestasi")}
+              defaultValue={user?.jenisPrestasi}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Jenis Prestasi
@@ -517,6 +584,7 @@ const Add = () => {
               placeholder="tingkatPres"
               maxLength={255}
               {...register("tingkatPres")}
+              defaultValue={user?.tingkatPres}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Tingkat
@@ -533,6 +601,7 @@ const Add = () => {
               placeholder="tahunPres"
               maxLength={255}
               {...register("tahunPres")}
+              defaultValue={user?.tahunPres}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Tahun
@@ -553,6 +622,7 @@ const Add = () => {
               placeholder="jenisBeasiswa"
               maxLength={255}
               {...register("jenisBeasiswa")}
+              defaultValue={user?.jenisBeasiswa}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Jenis Beasiswa
@@ -569,6 +639,7 @@ const Add = () => {
               placeholder="sumberBea"
               maxLength={255}
               {...register("sumberBea")}
+              defaultValue={user?.sumberBea}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Sumber
@@ -585,6 +656,7 @@ const Add = () => {
               placeholder="tahunBea"
               maxLength={255}
               {...register("tahunBea")}
+              defaultValue={user?.tahunBea}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Tahun
@@ -610,6 +682,7 @@ const Add = () => {
               required
               maxLength={255}
               {...register("namaAyah")}
+              defaultValue={user?.namaAyah}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Nama Ayah
@@ -626,6 +699,7 @@ const Add = () => {
               placeholder="pekerjaanAyah"
               maxLength={255}
               {...register("pekerjaanAyah")}
+              defaultValue={user?.pekerjaanAyah}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Pekerjaan
@@ -642,6 +716,7 @@ const Add = () => {
               placeholder="pendidikanAyah"
               required
               maxLength={255}
+              defaultValue={user?.pendidikanAyah}
               {...register("pendidikanAyah")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -658,6 +733,7 @@ const Add = () => {
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="penghasilanAyah"
               maxLength={255}
+              defaultValue={user?.penghasilanAyah}
               {...register("penghasilanAyah")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -675,6 +751,7 @@ const Add = () => {
               placeholder="noTlpAyah"
               required
               maxLength={255}
+              defaultValue={user?.noTlpAyah}
               {...register("noTlpAyah")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -699,6 +776,7 @@ const Add = () => {
               placeholder="namaIbu"
               required
               maxLength={255}
+              defaultValue={user?.namaIbu}
               {...register("namaIbu")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -716,6 +794,7 @@ const Add = () => {
               placeholder="pekerjaanIbu"
               maxLength={255}
               {...register("pekerjaanIbu")}
+              defaultValue={user?.pekerjaanIbu}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Pekerjaan
@@ -732,6 +811,7 @@ const Add = () => {
               placeholder="pendidikanIbu"
               required
               maxLength={255}
+              defaultValue={user?.pendidikanIbu}
               {...register("pendidikanIbu")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -748,6 +828,7 @@ const Add = () => {
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="penghasilanIbu"
               maxLength={255}
+              defaultValue={user?.penghasilanIbu}
               {...register("penghasilanIbu")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -765,6 +846,7 @@ const Add = () => {
               placeholder="noTlpIbu"
               required
               maxLength={255}
+              defaultValue={user?.noTlpIbu}
               {...register("noTlpIbu")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -789,6 +871,7 @@ const Add = () => {
               placeholder="namaWali"
               required
               maxLength={255}
+              defaultValue={user?.namaWali}
               {...register("namaWali")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -805,6 +888,7 @@ const Add = () => {
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="pekerjaanWali"
               maxLength={255}
+              defaultValue={user?.pekerjaanWali}
               {...register("pekerjaanWali")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -822,6 +906,7 @@ const Add = () => {
               placeholder="pendidikanWali"
               required
               maxLength={255}
+              defaultValue={user?.pendidikanWali}
               {...register("pendidikanWali")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -838,6 +923,7 @@ const Add = () => {
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="penghasilanWali"
               maxLength={255}
+              defaultValue={user?.penghasilanWali}
               {...register("penghasilanWali")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -855,6 +941,7 @@ const Add = () => {
               placeholder="noTlpWali"
               required
               maxLength={255}
+              defaultValue={user?.noTlpWali}
               {...register("noTlpWali")}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -882,4 +969,5 @@ const Add = () => {
     </>
   );
 };
-export default Add;
+
+export default Edit;

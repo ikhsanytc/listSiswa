@@ -14,7 +14,7 @@ const Home = () => {
     }
   }, []);
   const deleteUser = (nik: number) => {
-    if (confirm("Kamu yakin?")) {
+    if (confirm("Kamu yakin mau delete data ini?")) {
       const databaseJson = localStorage.getItem("data");
       const database: [] = databaseJson ? JSON.parse(databaseJson) : [];
       const indexToDelete = database.findIndex(
@@ -24,6 +24,7 @@ const Home = () => {
         database.splice(indexToDelete, 1);
         localStorage.setItem("data", JSON.stringify(database));
         setUsers(database);
+        alert("oke berhasil!");
       }
     }
   };
@@ -34,7 +35,7 @@ const Home = () => {
         <h1 className="font-bold text-lg">Halo!</h1>
         {users?.map((data, idx) => (
           <div
-            className="bg-slate-300 w-full p-3 rounded-lg flex justify-between active:bg-slate-400 items-center"
+            className="bg-slate-300 w-full p-3 rounded-lg flex justify-between active:bg-slate-400 items-center cursor-pointer"
             key={idx}
           >
             <div className="flex gap-2 items-center">
@@ -48,8 +49,13 @@ const Home = () => {
             </div>
             <div className="flex gap-2">
               <div
+                dangerouslySetInnerHTML={{ __html: feather.icons.eye.toSvg() }}
+                onClick={() => nav(`/detail/${data.nik}`)}
+              ></div>
+              <div
                 dangerouslySetInnerHTML={{ __html: feather.icons.edit.toSvg() }}
                 className="cursor-pointer"
+                onClick={() => nav(`/edit/${data.nik}`)}
               ></div>
               <div
                 dangerouslySetInnerHTML={{

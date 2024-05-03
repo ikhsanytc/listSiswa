@@ -1,49 +1,22 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import Inputs from "../types/Inputs";
-import { useRef, useState } from "react";
-import { Alert } from "flowbite-react";
-import { HiInformationCircle } from "react-icons/hi";
 
-const Add = () => {
+type params = {
+  nik: string;
+};
+const Detail = () => {
   const nav = useNavigate();
-  const scrollAtas = useRef<HTMLDivElement>(null);
-  const [errorAlert, setErrorAlert] = useState<string | null>();
+  const { nik } = useParams<params>();
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // console.table({ data });
-    const databaseJson = localStorage.getItem("data");
-    const database: Inputs[] = databaseJson ? JSON.parse(databaseJson) : [];
-    let duplicate: boolean = false;
-    database.forEach((data1) => {
-      if (data1.email == data.email) {
-        duplicate = true;
-      }
-    });
-    if (!duplicate) {
-      setErrorAlert(null);
-      database.push(data);
-      localStorage.setItem("data", JSON.stringify(database));
-      nav("/");
-    } else {
-      setErrorAlert("Email sudah di pakai!");
-      scrollAtas.current?.scrollIntoView({ behavior: "smooth" });
-    }
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
   };
   return (
     <>
       <Navbar back="/" />
       <form onSubmit={handleSubmit(onSubmit)} className="mt-20 px-4">
-        <div ref={scrollAtas}></div>
-        {errorAlert && (
-          <>
-            <Alert color="failure" icon={HiInformationCircle}>
-              <span>{errorAlert}</span>
-            </Alert>
-            <div className="p-2"></div>
-          </>
-        )}
         <div className="">
           <h1 className="text-xl font-bold underline underline-offset-4">
             Identitas Peserta Didik
@@ -882,4 +855,5 @@ const Add = () => {
     </>
   );
 };
-export default Add;
+
+export default Detail;

@@ -6,7 +6,7 @@ type Inputs = {
   asalSekolah: string;
   npsn: number;
   nisn: number;
-  noSeriIjazah: string;
+  noSeriIjazah: number;
   nik: number;
   alamat: string;
   kodePos: number;
