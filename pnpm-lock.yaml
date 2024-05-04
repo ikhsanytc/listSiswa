@@ -20,6 +20,9 @@ importers:
       '@types/feather-icons':
         specifier: ^4.29.4
         version: 4.29.4
+      '@types/react-router-transition':
+        specifier: ^2.1.6
+        version: 2.1.6
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -32,6 +35,9 @@ importers:
       flowbite-react:
         specifier: ^0.9.0
         version: 0.9.0(react-dom@18.3.0(react@18.3.0))(react@18.3.0)(tailwindcss@3.4.3)
+      framer-motion:
+        specifier: ^11.1.7
+        version: 11.1.7(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
       pg-hstore:
         specifier: ^2.3.4
         version: 2.3.4
@@ -53,6 +59,9 @@ importers:
       react-router-dom:
         specifier: ^6.23.0
         version: 6.23.0(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
+      react-router-transition:
+        specifier: ^2.1.0
+        version: 2.1.0(react-dom@18.3.0(react@18.3.0))(react-router-dom@6.23.0(react-dom@18.3.0(react@18.3.0))(react@18.3.0))(react@18.3.0)
       sequelize:
         specifier: ^6.37.3
         version: 6.37.3(pg-hstore@2.3.4)(sqlite3@5.1.7)
@@ -627,6 +636,9 @@ packages:
   '@types/feather-icons@4.29.4':
     resolution: {integrity: sha512-cvwI455PWx/gJ33XDTIZOdauRy+XCxZggkOT/tAQYZLdySPFATD4RnDC9mxOnCIEaK9kwPm3zZigkAsMkhXb5w==}
 
+  '@types/history@4.7.11':
+    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -647,6 +659,18 @@ packages:
 
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+
+  '@types/react-motion@0.0.40':
+    resolution: {integrity: sha512-Bp6i9WTvW6QFN2E/XQPm8HPGMx1SVJ7H1DPsvptwWWh1XBymDZ7N7SK4nSZT/4tP4bTGvp1KHSAsswWZKO/WHA==}
+
+  '@types/react-router-dom@5.3.3':
+    resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
+
+  '@types/react-router-transition@2.1.6':
+    resolution: {integrity: sha512-uzmdvahKyUGkJkAn4+iFTTFx7p4qtAfz5rWCLhxCRrzcxJjBnids1I7w0Do9yCrT99gmpl4zxeCf/fmacuTQQQ==}
+
+  '@types/react-router@5.1.20':
+    resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
 
   '@types/react@18.3.0':
     resolution: {integrity: sha512-DiUcKjzE6soLyln8NNZmyhcQjVv+WsUIFSqetMN0p8927OztKT4VTfFTqsbAi5oAGIcgOmOajlfBqyptDDjZRw==}
@@ -1142,6 +1166,20 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
+  framer-motion@11.1.7:
+    resolution: {integrity: sha512-cW11Pu53eDAXUEhv5hEiWuIXWhfkbV32PlgVISn7jRdcAiVrJ1S03YQQ0/DzoswGYYwKi4qYmHHjCzAH52eSdQ==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fs-constants@1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
 
@@ -1582,6 +1620,12 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  performance-now@0.2.0:
+    resolution: {integrity: sha512-YHk5ez1hmMR5LOkb9iJkLKqoBlL7WD5M8ljC75ZfzXriuBIVNuecaXuU7e+hOwyqf24Wxhh7Vxgt7Hnw9288Tg==}
+
+  performance-now@2.1.0:
+    resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
+
   pg-connection-string@2.6.4:
     resolution: {integrity: sha512-v+Z7W/0EO707aNMaAEfiGnGL9sxxumwLl2fJvCQtMn9Fxsg+lPpPkdcyBSv/KFgpGdYkMfn+EI1Or2EHjpgLCA==}
 
@@ -1666,6 +1710,9 @@ packages:
     resolution: {integrity: sha512-y+WKFlBR8BGXnsNlIHFGPZmyDf3DFMoLhaflAnyZgV6rG6xu+JwesTo2Q9R6XwYmtmwAFCkAk3e35jEdoeh/3g==}
     engines: {node: '>=10'}
 
+  prop-types@15.8.1:
+    resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
+
   pump@3.0.0:
     resolution: {integrity: sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==}
 
@@ -1675,6 +1722,9 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+
+  raf@3.4.1:
+    resolution: {integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==}
 
   rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
@@ -1701,6 +1751,14 @@ packages:
     peerDependencies:
       react: '*'
 
+  react-is@16.13.1:
+    resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  react-motion@0.5.2:
+    resolution: {integrity: sha512-9q3YAvHoUiWlP3cK0v+w1N5Z23HXMj4IF4YuvjvWegWqNPfLXsOBE/V7UvQGpXxHFKRQQcNcVQE31g9SB/6qgQ==}
+    peerDependencies:
+      react: ^0.14.9 || ^15.3.0 || ^16.0.0
+
   react-refresh@0.14.1:
     resolution: {integrity: sha512-iZiRCtNGY3QYP3pYOSSBOvQmBpQTcJccr/VcK2blpJrpPTUDjeN51mxm5nsrkCzBwsbGUj+TN9q2oPz5E13FLg==}
     engines: {node: '>=0.10.0'}
@@ -1711,6 +1769,13 @@ packages:
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
+
+  react-router-transition@2.1.0:
+    resolution: {integrity: sha512-vL0JczAcs4s5MjWm1DSitoap9KRqE1m7YZopIXiT4x6NVrqXs9CGH1uLBBSZ3rJFwGBQRgsfY7NFe2ygDfGQ2Q==}
+    peerDependencies:
+      react: ^16.8.0
+      react-dom: ^16.8.0
+      react-router-dom: ^5.0.0
 
   react-router@6.23.0:
     resolution: {integrity: sha512-wPMZ8S2TuPadH0sF5irFGjkNLIcRvOSaEe7v+JER8508dyJumm6XZB1u5kztlX0RVq6AzRVndzqcUh6sFIauzA==}
@@ -1978,6 +2043,9 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  tslib@2.6.2:
+    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
   tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
@@ -2650,6 +2718,8 @@ snapshots:
 
   '@types/feather-icons@4.29.4': {}
 
+  '@types/history@4.7.11': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/lodash@4.17.0': {}
@@ -2666,6 +2736,27 @@ snapshots:
 
   '@types/react-dom@18.3.0':
     dependencies:
+      '@types/react': 18.3.0
+
+  '@types/react-motion@0.0.40':
+    dependencies:
+      '@types/react': 18.3.0
+
+  '@types/react-router-dom@5.3.3':
+    dependencies:
+      '@types/history': 4.7.11
+      '@types/react': 18.3.0
+      '@types/react-router': 5.1.20
+
+  '@types/react-router-transition@2.1.6':
+    dependencies:
+      '@types/react': 18.3.0
+      '@types/react-motion': 0.0.40
+      '@types/react-router-dom': 5.3.3
+
+  '@types/react-router@5.1.20':
+    dependencies:
+      '@types/history': 4.7.11
       '@types/react': 18.3.0
 
   '@types/react@18.3.0':
@@ -3258,6 +3349,13 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
+  framer-motion@11.1.7(react-dom@18.3.0(react@18.3.0))(react@18.3.0):
+    dependencies:
+      tslib: 2.6.2
+    optionalDependencies:
+      react: 18.3.0
+      react-dom: 18.3.0(react@18.3.0)
+
   fs-constants@1.0.0: {}
 
   fs-minipass@2.1.0:
@@ -3702,6 +3800,10 @@ snapshots:
 
   path-type@4.0.0: {}
 
+  performance-now@0.2.0: {}
+
+  performance-now@2.1.0: {}
+
   pg-connection-string@2.6.4: {}
 
   pg-hstore@2.3.4:
@@ -3779,6 +3881,12 @@ snapshots:
       retry: 0.12.0
     optional: true
 
+  prop-types@15.8.1:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react-is: 16.13.1
+
   pump@3.0.0:
     dependencies:
       end-of-stream: 1.4.4
@@ -3787,6 +3895,10 @@ snapshots:
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
+
+  raf@3.4.1:
+    dependencies:
+      performance-now: 2.1.0
 
   rc@1.2.8:
     dependencies:
@@ -3813,6 +3925,15 @@ snapshots:
     dependencies:
       react: 18.3.0
 
+  react-is@16.13.1: {}
+
+  react-motion@0.5.2(react@18.3.0):
+    dependencies:
+      performance-now: 0.2.0
+      prop-types: 15.8.1
+      raf: 3.4.1
+      react: 18.3.0
+
   react-refresh@0.14.1: {}
 
   react-router-dom@6.23.0(react-dom@18.3.0(react@18.3.0))(react@18.3.0):
@@ -3821,6 +3942,14 @@ snapshots:
       react: 18.3.0
       react-dom: 18.3.0(react@18.3.0)
       react-router: 6.23.0(react@18.3.0)
+
+  react-router-transition@2.1.0(react-dom@18.3.0(react@18.3.0))(react-router-dom@6.23.0(react-dom@18.3.0(react@18.3.0))(react@18.3.0))(react@18.3.0):
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.3.0
+      react-dom: 18.3.0(react@18.3.0)
+      react-motion: 0.5.2(react@18.3.0)
+      react-router-dom: 6.23.0(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
 
   react-router@6.23.0(react@18.3.0):
     dependencies:
@@ -4129,6 +4258,8 @@ snapshots:
       typescript: 5.4.5
 
   ts-interface-checker@0.1.13: {}
+
+  tslib@2.6.2: {}
 
   tunnel-agent@0.6.0:
     dependencies:

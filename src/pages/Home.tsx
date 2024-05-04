@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Inputs from "../types/Inputs";
+import { motion } from "framer-motion";
+
 const Home = () => {
   const nav = useNavigate();
   const [users, setUsers] = useState<Inputs[]>([]);
@@ -31,7 +33,12 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <section className="mt-20 flex flex-col gap-4 px-4">
+      <motion.section
+        className="mt-20 flex flex-col gap-4 px-4"
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.4 } }}
+      >
         <h1 className="font-bold text-lg">Halo!</h1>
         {users?.map((data, idx) => (
           <div
@@ -67,7 +74,7 @@ const Home = () => {
             </div>
           </div>
         ))}
-      </section>
+      </motion.section>
       <div
         className="fixed bottom-5 right-5 bg-blue-500 p-5 rounded-xl cursor-pointer text-white"
         dangerouslySetInnerHTML={{ __html: feather.icons.plus.toSvg() }}

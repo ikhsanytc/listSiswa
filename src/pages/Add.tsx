@@ -5,6 +5,7 @@ import Inputs from "../types/Inputs";
 import { useRef, useState } from "react";
 import { Alert } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 const Add = () => {
   const nav = useNavigate();
@@ -34,7 +35,13 @@ const Add = () => {
   return (
     <>
       <Navbar back="/" />
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-20 px-4">
+      <motion.form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-20 px-4"
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.4 } }}
+      >
         <div ref={scrollAtas}></div>
         {errorAlert && (
           <>
@@ -877,7 +884,7 @@ const Add = () => {
             Back
           </button>
         </div>
-      </form>
+      </motion.form>
       <div className="p-5"></div>
     </>
   );

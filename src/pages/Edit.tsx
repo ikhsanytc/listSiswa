@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Inputs from "../types/Inputs";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 type params = {
   nik: string;
@@ -85,7 +86,13 @@ const Edit = () => {
   return (
     <>
       <Navbar back="/" />
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-20 px-4">
+      <motion.form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-20 px-4"
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.4 } }}
+      >
         <div className="">
           <h1 className="text-xl font-bold underline underline-offset-4">
             Identitas Peserta Didik
@@ -964,7 +971,7 @@ const Edit = () => {
             Back
           </button>
         </div>
-      </form>
+      </motion.form>
       <div className="p-5"></div>
     </>
   );

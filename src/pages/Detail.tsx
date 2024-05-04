@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { motion } from "framer-motion";
 
 type params = {
   nik: string;
@@ -9,7 +10,12 @@ const Detail = () => {
   return (
     <>
       <Navbar back="/" />
-      <section className="mt-20 h-[100vh] flex flex-col justify-center items-center">
+      <motion.section
+        className="mt-20 h-[100vh] flex flex-col justify-center items-center"
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: window.innerWidth, transition: { duration: 0.4 } }}
+      >
         <h1 className="font-medium text-4xl">Belum jadi...</h1>
         <p className="text-sm">{nik}</p>
         <div className="p-2"></div>
@@ -21,7 +27,7 @@ const Detail = () => {
             Back
           </button>
         </Link>
-      </section>
+      </motion.section>
       {/* <div className="p-5"></div> */}
     </>
   );
