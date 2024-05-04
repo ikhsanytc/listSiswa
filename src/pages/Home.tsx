@@ -8,8 +8,18 @@ import { motion } from "framer-motion";
 const Home = () => {
   const nav = useNavigate();
   const [users, setUsers] = useState<Inputs[]>([]);
+  const [name, setName] = useState<string | null>(null);
   useEffect(() => {
     const databaseJson = localStorage.getItem("data");
+    const name1 = localStorage.getItem("name");
+    if (name1) {
+      setName(name1);
+    } else {
+      const jawaban = prompt("Siapa nama mu?");
+      if (jawaban) {
+        localStorage.setItem("name", jawaban);
+      }
+    }
     const database = databaseJson ? JSON.parse(databaseJson) : null;
     if (Array.isArray(database)) {
       setUsers(database);
@@ -40,7 +50,8 @@ const Home = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2, delay: 0.4 }}
       >
-        <h1 className="font-bold text-lg">Halo!</h1>
+        {name && <h1 className="font-bold text-lg">Halo, {name}!</h1>}
+        {!name && <h1 className="font-bold text-lg">Halo!</h1>}
         {users?.map((data, idx) => (
           <div
             className="bg-slate-300 w-full p-3 rounded-lg flex justify-between active:bg-slate-400 items-center cursor-pointer"

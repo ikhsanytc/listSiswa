@@ -47,7 +47,7 @@ const Detail = () => {
           </h1>
         </div>
         <div className="pt-10"></div>
-        <div className="bg-white rounded-lg shadow-lg w-full md:w-1/2 p-5">
+        <div className="bg-white rounded-lg shadow-lg w-full md:w-1/2 p-5 mx-auto">
           <h2 className="text-center text-2xl font-medium">Informasi</h2>
           <hr className="border-[3px] rounded-full border-gray-300 mt-2" />
           <div className="pt-4"></div>
