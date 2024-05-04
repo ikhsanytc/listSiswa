@@ -35,9 +35,10 @@ const Home = () => {
       <Navbar />
       <motion.section
         className="mt-20 flex flex-col gap-4 px-4"
-        initial={{ width: 0 }}
-        animate={{ width: "100%" }}
-        exit={{ x: window.innerWidth, transition: { duration: 0.4 } }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2, delay: 0.4 }}
       >
         <h1 className="font-bold text-lg">Halo!</h1>
         {users?.map((data, idx) => (

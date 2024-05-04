@@ -12,9 +12,10 @@ const Detail = () => {
       <Navbar back="/" />
       <motion.section
         className="mt-20 h-[100vh] flex flex-col justify-center items-center"
-        initial={{ width: 0 }}
-        animate={{ width: "100%" }}
-        exit={{ x: window.innerWidth, transition: { duration: 0.4 } }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2, delay: 0.4 }}
       >
         <h1 className="font-medium text-4xl">Belum jadi...</h1>
         <p className="text-sm">{nik}</p>
