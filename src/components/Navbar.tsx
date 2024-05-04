@@ -64,7 +64,7 @@ const Navbar: FC<props> = (props) => {
             className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full"
             onClick={() => setModalHow(true)}
           >
-            Cara menggunakannya.
+            Cara menggunakan app.
           </button>
         </div>
         <p
