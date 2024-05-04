@@ -2,17 +2,12 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Inputs from "../types/Inputs";
-import { useRef, useState } from "react";
-import { Alert } from "flowbite-react";
-import { HiInformationCircle } from "react-icons/hi";
 import { motion } from "framer-motion";
 
 const Add = () => {
   const nav = useNavigate();
-  const scrollAtas = useRef<HTMLDivElement>(null);
-  const [errorAlert, setErrorAlert] = useState<string | null>();
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     // console.table({ data });
     const databaseJson = localStorage.getItem("data");
     const database: Inputs[] = databaseJson ? JSON.parse(databaseJson) : [];
@@ -20,16 +15,16 @@ const Add = () => {
     database.forEach((data1) => {
       if (data1.email == data.email) {
         duplicate = true;
+      } else {
+        duplicate = false;
       }
     });
     if (!duplicate) {
-      setErrorAlert(null);
       database.push(data);
       localStorage.setItem("data", JSON.stringify(database));
       nav("/");
     } else {
-      setErrorAlert("Email sudah di pakai!");
-      scrollAtas.current?.scrollIntoView({ behavior: "smooth" });
+      alert("Email sudah di pakai!");
     }
   };
   return (
@@ -43,15 +38,6 @@ const Add = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2, delay: 0.4 }}
       >
-        <div ref={scrollAtas}></div>
-        {errorAlert && (
-          <>
-            <Alert color="failure" icon={HiInformationCircle}>
-              <span>{errorAlert}</span>
-            </Alert>
-            <div className="p-2"></div>
-          </>
-        )}
         <div className="">
           <h1 className="text-xl font-bold underline underline-offset-4">
             Identitas Peserta Didik
@@ -81,7 +67,7 @@ const Add = () => {
             className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 p-2"
           >
             <input
-              type="date"
+              type="text"
               id="tempatTglLahir"
               className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
               placeholder="tempatTglLahir"
