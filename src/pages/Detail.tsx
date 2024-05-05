@@ -36,13 +36,15 @@ const Detail = () => {
         transition={{ duration: 0.2, delay: 0.4 }}
       >
         <div className="flex flex-col gap-2">
-          <img
-            src={img}
-            loading="lazy"
-            alt="photo profile"
-            className="rounded-full w-44 mx-auto"
-          />
-          <h1 className="text-center text-4xl font-semibold">
+          <div className="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-full w-44 mx-auto p-1">
+            <img
+              src={img}
+              loading="lazy"
+              alt="photo profile"
+              className="rounded-full w-44 mx-auto"
+            />
+          </div>
+          <h1 className="text-center text-3xl font-semibold">
             {user?.CalonPesertaDidik}
           </h1>
         </div>

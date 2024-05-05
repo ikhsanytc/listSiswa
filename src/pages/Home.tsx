@@ -88,7 +88,7 @@ const Home = () => {
         ))}
       </motion.section>
       <div
-        className="fixed bottom-5 right-5 bg-blue-500 p-5 rounded-xl cursor-pointer text-white"
+        className="fixed bottom-5 right-5 bg-blue-500 active:bg-blue-600 active:scale-105 transition duration-300 p-5 rounded-xl cursor-pointer text-white"
         dangerouslySetInnerHTML={{ __html: feather.icons.plus.toSvg() }}
         onClick={() => nav("/addUser")}
       ></div>

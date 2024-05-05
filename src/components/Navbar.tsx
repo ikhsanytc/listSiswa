@@ -55,13 +55,13 @@ const Navbar: FC<props> = (props) => {
       >
         <div className={`flex flex-col gap-2 ${!drawer && "hidden"}`}>
           <button
-            className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full"
+            className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full active:bg-blue-600 active:scale-105 transition duration-300"
             onClick={() => setModalAbout(true)}
           >
             Tentang app.
           </button>
           <button
-            className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full"
+            className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full active:bg-blue-600 active:scale-105 transition duration-300"
             onClick={() => setModalHow(true)}
           >
             Cara menggunakan app.
@@ -87,7 +87,7 @@ const Navbar: FC<props> = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <button
-            className="bg-blue-500 text-white px-3 py-2 rounded-lg"
+            className="bg-blue-500 text-white px-3 py-2 rounded-lg active:bg-blue-600 active:scale-105 transition duration-300"
             onClick={() => setModalAbout(false)}
           >
             Close
@@ -109,7 +109,7 @@ const Navbar: FC<props> = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <button
-            className="bg-blue-500 text-white px-3 py-2 rounded-lg"
+            className="bg-blue-500 text-white px-3 py-2 rounded-lg active:bg-blue-600 active:scale-105 transition duration-300"
             onClick={() => setModalHow(false)}
           >
             Close

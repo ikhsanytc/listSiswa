@@ -859,14 +859,14 @@ const Add = () => {
         <div className="flex gap-2">
           <button
             type="submit"
-            className="mt-5 bg-blue-500 px-2 py-3 rounded-lg text-white active:bg-blue-600"
+            className="mt-5 bg-blue-500 px-2 py-3 rounded-lg text-white active:bg-blue-600 active:scale-105 transition duration-300"
           >
             Submit
           </button>
           <button
             type="button"
             onClick={() => nav("/")}
-            className="mt-5 border-2 border-blue-500 px-2 py-3 rounded-lg text-blue-500 active:border-blue-600"
+            className="mt-5 border-2 border-blue-500 px-2 py-3 rounded-lg text-blue-500 active:border-blue-600 active:scale-105 transition duration-300"
           >
             Back
           </button>
