@@ -48,7 +48,7 @@ type Inputs = {
 };
 
 interface InputsV2 {
-  id: number;
+  id: number | string;
   NamaSiswa: string;
   KelasSiswa: string;
   AgamaSiswa: string;
@@ -60,4 +60,14 @@ interface InputsV2 {
   noTlpIbu: number;
 }
 
-export type { Inputs, InputsV2 };
+interface CommentT {
+  id: number | string;
+  name: string;
+  comment: string;
+  time: string;
+}
+
+export type { Inputs, InputsV2, CommentT };
+export interface NavbarProps {
+  back?: string;
+}

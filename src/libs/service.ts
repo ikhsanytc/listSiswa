@@ -1,3 +1,4 @@
+import { formatDistanceToNow } from "date-fns";
 function generateRandomToken(length: number) {
   const characters = "0123456789";
   let token = "";
@@ -8,4 +9,8 @@ function generateRandomToken(length: number) {
   return Number(token);
 }
 
-export { generateRandomToken };
+function timeAgo(date: string) {
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
+}
+
+export { generateRandomToken, timeAgo };

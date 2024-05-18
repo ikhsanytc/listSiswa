@@ -4,24 +4,28 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { InputsV2 } from "../types/Inputs";
 import { motion } from "framer-motion";
 import { generateRandomToken } from "../libs/service";
+import { FormField } from "../components/FormField";
+import { SelectField } from "../components/SelectField";
+import { SectionTitle } from "../components/SectionTitle";
 
 const Add = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm<InputsV2>();
+
   const onSubmit: SubmitHandler<InputsV2> = (data) => {
-    // console.table({ data });
     const databaseJson = localStorage.getItem("data");
     const database: InputsV2[] = databaseJson ? JSON.parse(databaseJson) : [];
     database.push(data);
     localStorage.setItem("data", JSON.stringify(database));
-    nav("/");
+    navigate("/");
   };
+
   return (
     <>
       <Navbar back="/" />
       <motion.form
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-20 px-4"
+        className="mt-20 px-4 flex flex-col gap-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -29,212 +33,104 @@ const Add = () => {
       >
         <input
           type="hidden"
-          id="id"
           {...register("id")}
           value={generateRandomToken(5)}
         />
-        <h1 className="text-xl font-bold underline underline-offset-4">
-          Identitas Peserta Didik
-        </h1>
-        <div className="flex flex-col gap-4 pt-2">
-          <label
-            htmlFor="NamaSiswa"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <input
-              type="text"
-              id="NamaSiswa"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              placeholder="Nama Siswa"
-              required
-              maxLength={255}
-              {...register("NamaSiswa")}
-            />
 
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Nama Siswa
-            </span>
-          </label>
-          <label
-            htmlFor="KelasSiswa"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <select
-              id="KelasSiswa"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              required
-              {...register("KelasSiswa")}
-            >
-              <option value="No" defaultChecked>
-                Pilih Kelas
-              </option>
-              <optgroup label="Kelas 7">
-                <option value="7A">7A</option>
-                <option value="7B">7B</option>
-                <option value="7C">7C</option>
-                <option value="7D">7D</option>
-                <option value="7E">7E</option>
-              </optgroup>
-              <optgroup label="Kelas 8">
-                <option value="8A">8A</option>
-                <option value="8B">8B</option>
-                <option value="8C">8C</option>
-                <option value="8D">8D</option>
-                <option value="8E">8E</option>
-              </optgroup>
-              <optgroup label="Kelas 9">
-                <option value="9A">9A</option>
-                <option value="9B">9B</option>
-                <option value="9C">9C</option>
-                <option value="9D">9D</option>
-                <option value="9E">9E</option>
-              </optgroup>
-            </select>
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Kelas Siswa
-            </span>
-          </label>
-          <label
-            htmlFor="KelaminSiswa"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <select
-              id="KelaminSiswa"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              required
-              {...register("KelaminSiswa")}
-            >
-              <option value="no" defaultChecked>
-                Pilih Kelamin
-              </option>
-              <option value="Laki-Laki">Laki-Laki</option>
-              <option value="Wanita">Wanita</option>
-            </select>
+        <SectionTitle title="Identitas Peserta Didik" />
+        <FormField
+          id="NamaSiswa"
+          label="Nama Siswa"
+          type="text"
+          register={register}
+          required
+        />
+        <SelectField
+          id="KelasSiswa"
+          label="Kelas Siswa"
+          options={[
+            { value: "7A", label: "7A" },
+            { value: "7B", label: "7B" },
+            { value: "7C", label: "7C" },
+            { value: "7D", label: "7D" },
+            { value: "7E", label: "7E" },
+            { value: "8A", label: "8A" },
+            { value: "8B", label: "8B" },
+            { value: "8C", label: "8C" },
+            { value: "8D", label: "8D" },
+            { value: "8E", label: "8E" },
+            { value: "9A", label: "9A" },
+            { value: "9B", label: "9B" },
+            { value: "9C", label: "9C" },
+            { value: "9D", label: "9D" },
+            { value: "9E", label: "9E" },
+          ]}
+          register={register}
+          required
+        />
+        <SelectField
+          id="KelaminSiswa"
+          label="Kelamin Siswa"
+          options={[
+            { value: "Laki-Laki", label: "Laki-Laki" },
+            { value: "Wanita", label: "Wanita" },
+          ]}
+          register={register}
+          required
+        />
+        <SelectField
+          id="AgamaSiswa"
+          label="Agama Siswa"
+          options={[
+            { value: "Islam", label: "Islam" },
+            { value: "Kristen", label: "Kristen" },
+            { value: "Buddha", label: "Buddha" },
+            { value: "Konghucu", label: "Konghucu" },
+            { value: "Hindu", label: "Hindu" },
+          ]}
+          register={register}
+          required
+        />
+        <FormField
+          id="noTlpSiswa"
+          label="No Tlp Siswa"
+          type="number"
+          register={register}
+          required
+        />
 
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Kelamin Siswa
-            </span>
-          </label>
-          <label
-            htmlFor="AgamaSiswa"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <select
-              id="AgamaSiswa"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              required
-              {...register("AgamaSiswa")}
-            >
-              <option value="no" defaultChecked>
-                Pilih Agama
-              </option>
-              <option value="Islam">Islam</option>
-              <option value="Kristen">Kristen</option>
-              <option value="Buddha">Buddha</option>
-              <option value="Konghucu">Konghucu</option>
-              <option value="Hindu">Hindu</option>
-            </select>
+        <SectionTitle title="Data Ayah" />
+        <FormField
+          id="NamaAyah"
+          label="Nama Ayah"
+          type="text"
+          register={register}
+          required
+        />
+        <FormField
+          id="noTlpAyah"
+          label="No Tlp Ayah"
+          type="number"
+          register={register}
+          required
+        />
 
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Agama Siswa
-            </span>
-          </label>
-          <label
-            htmlFor="noTlpSiswa"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <input
-              type="number"
-              id="noTlpSiswa"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              placeholder="No Tlp Siswa"
-              required
-              maxLength={255}
-              {...register("noTlpSiswa")}
-            />
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              No Tlp Siswa
-            </span>
-          </label>
-        </div>
-        <h1 className="text-xl font-bold underline underline-offset-4 pt-2 pb-2">
-          Data Ayah
-        </h1>
-        <div className="flex flex-col gap-4">
-          <label
-            htmlFor="NamaAyah"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <input
-              type="text"
-              id="NamaAyah"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              placeholder="Nama Ayah"
-              required
-              maxLength={255}
-              {...register("NamaAyah")}
-            />
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Nama Ayah
-            </span>
-          </label>
-          <label
-            htmlFor="noTlpAyah"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <input
-              type="number"
-              id="noTlpAyah"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              placeholder="No Tlp Ayah"
-              required
-              maxLength={255}
-              {...register("noTlpAyah")}
-            />
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              No Tlp Ayah
-            </span>
-          </label>
-        </div>
-        <h1 className="text-xl font-bold underline underline-offset-4 pt-2 pb-2">
-          Data Ibu
-        </h1>
-        <div className="flex flex-col gap-4">
-          <label
-            htmlFor="NamaIbu"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <input
-              type="text"
-              id="NamaIbu"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              placeholder="Nama Ibu"
-              required
-              maxLength={255}
-              {...register("NamaIbu")}
-            />
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Nama Ibu
-            </span>
-          </label>
-          <label
-            htmlFor="noTlpIbu"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
-            <input
-              type="number"
-              id="noTlpIbu"
-              className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 w-full"
-              placeholder="No Tlp Ibu"
-              required
-              maxLength={255}
-              {...register("noTlpIbu")}
-            />
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              No Tlp Ibu
-            </span>
-          </label>
-        </div>
+        <SectionTitle title="Data Ibu" />
+        <FormField
+          id="NamaIbu"
+          label="Nama Ibu"
+          type="text"
+          register={register}
+          required
+        />
+        <FormField
+          id="noTlpIbu"
+          label="No Tlp Ibu"
+          type="number"
+          register={register}
+          required
+        />
+
         <div className="pt-4 pb-5 flex gap-2">
           <button
             type="submit"
@@ -244,7 +140,7 @@ const Add = () => {
           </button>
           <button
             type="button"
-            onClick={() => nav("/")}
+            onClick={() => navigate("/")}
             className="p-3 bg-transparent border-sky-500 border rounded-lg text-sky-500"
           >
             Kembali
@@ -255,4 +151,5 @@ const Add = () => {
     </>
   );
 };
+
 export default Add;

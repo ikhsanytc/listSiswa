@@ -9,37 +9,40 @@ const Home = () => {
   const nav = useNavigate();
   const [users, setUsers] = useState<InputsV2[]>([]);
   const [name, setName] = useState<string | null>(null);
+
   useEffect(() => {
     const databaseJson = localStorage.getItem("data");
-    const name1 = localStorage.getItem("name");
-    if (name1) {
-      setName(name1);
+    const storedName = localStorage.getItem("name");
+
+    if (storedName) {
+      setName(storedName);
     } else {
-      const jawaban = prompt("Siapa nama mu?");
-      if (jawaban) {
-        localStorage.setItem("name", jawaban);
+      const userName = prompt("Siapa nama mu?");
+      if (userName) {
+        localStorage.setItem("name", userName);
+        setName(userName);
       }
     }
-    const database = databaseJson ? JSON.parse(databaseJson) : null;
-    if (Array.isArray(database)) {
+
+    if (databaseJson) {
+      const database: InputsV2[] = JSON.parse(databaseJson);
       setUsers(database);
     }
   }, []);
-  const deleteUser = (id: number) => {
+
+  const deleteUser = (id: number | string) => {
     if (confirm("Kamu yakin mau delete data ini?")) {
       const databaseJson = localStorage.getItem("data");
-      const database: [] = databaseJson ? JSON.parse(databaseJson) : [];
-      const indexToDelete = database.findIndex(
-        (item: { id: number }) => item.id == id
-      );
-      if (indexToDelete !== -1) {
-        database.splice(indexToDelete, 1);
-        localStorage.setItem("data", JSON.stringify(database));
-        setUsers(database);
-        alert("oke berhasil!");
+      if (databaseJson) {
+        const database: InputsV2[] = JSON.parse(databaseJson);
+        const updatedDatabase = database.filter((item) => item.id !== id);
+        localStorage.setItem("data", JSON.stringify(updatedDatabase));
+        setUsers(updatedDatabase);
+        alert("Data berhasil dihapus!");
       }
     }
   };
+
   return (
     <>
       <Navbar />
@@ -50,18 +53,17 @@ const Home = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2, delay: 0.4 }}
       >
-        {name && <h1 className="font-bold text-lg">Halo, {name}!</h1>}
-        {!name && <h1 className="font-bold text-lg">Halo!</h1>}
-        {users?.map((data, idx) => (
+        <h1 className="font-bold text-lg">Halo, {name || "!"}</h1>
+        {users.map((data) => (
           <div
             className="bg-slate-300 w-full p-3 rounded-lg flex justify-between active:bg-slate-400 items-center cursor-pointer"
-            key={idx}
+            key={data.id}
           >
             <div className="flex gap-2 items-center">
               <div
                 dangerouslySetInnerHTML={{ __html: feather.icons.user.toSvg() }}
               ></div>
-              <div className="flex flex-col ">
+              <div className="flex flex-col">
                 <p className="font-semibold">{data.NamaSiswa}</p>
                 <small>{data.id}</small>
               </div>
@@ -70,18 +72,19 @@ const Home = () => {
               <div
                 dangerouslySetInnerHTML={{ __html: feather.icons.eye.toSvg() }}
                 onClick={() => nav(`/detail/${data.id}`)}
+                className="cursor-pointer"
               ></div>
               <div
                 dangerouslySetInnerHTML={{ __html: feather.icons.edit.toSvg() }}
-                className="cursor-pointer"
                 onClick={() => nav(`/edit/${data.id}`)}
+                className="cursor-pointer"
               ></div>
               <div
                 dangerouslySetInnerHTML={{
                   __html: feather.icons.delete.toSvg(),
                 }}
-                className="cursor-pointer"
                 onClick={() => deleteUser(data.id)}
+                className="cursor-pointer"
               ></div>
             </div>
           </div>

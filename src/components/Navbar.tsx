@@ -2,41 +2,48 @@ import { FC, useEffect, useRef, useState } from "react";
 import feather from "feather-icons";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "flowbite-react";
+import { NavbarProps } from "../types/Inputs";
 
-interface props {
-  back?: string;
-}
-const Navbar: FC<props> = (props) => {
+const Navbar: FC<NavbarProps> = ({ back }) => {
   const nav = useNavigate();
   const drawerRef = useRef<HTMLDivElement>(null);
   const [drawer, setDrawer] = useState(false);
   const [modalAbout, setModalAbout] = useState(false);
   const [modalHow, setModalHow] = useState(false);
+
   const clickOutside = (e: MouseEvent) => {
     if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
       setDrawer(false);
     }
   };
+
   useEffect(() => {
     document.addEventListener("mousedown", clickOutside);
     return () => {
       document.removeEventListener("mousedown", clickOutside);
     };
   }, []);
+
   const toggleDrawer = () => {
-    setDrawer(!drawer);
+    setDrawer((prevDrawer) => !prevDrawer);
   };
+
+  const closeModal = () => {
+    setModalAbout(false);
+    setModalHow(false);
+  };
+
   return (
     <>
       <nav className="bg-white border flex justify-between fixed top-0 w-full p-3 shadow z-40">
         <div className="flex gap-2 items-center">
-          {props?.back && (
+          {back && (
             <div
               dangerouslySetInnerHTML={{
                 __html: feather.icons["arrow-left"].toSvg(),
               }}
               className="cursor-pointer"
-              onClick={() => nav(`${props?.back}`)}
+              onClick={() => nav(back)}
             ></div>
           )}
           <h1 className="font-bold text-xl">Daftar Siswa</h1>
@@ -49,11 +56,11 @@ const Navbar: FC<props> = (props) => {
       </nav>
       <div
         ref={drawerRef}
-        className={`inset-y-0 backdrop-filter backdrop-blur-lg bg-opacity-60 fixed right-0 bg-slate-300 py-4 px-3 z-50 ${
-          drawer ? "w-64" : "w-0 opacity-0"
-        } transition-all ease-in-out duration-300`}
+        className={`fixed inset-y-0 right-0 bg-slate-300 py-4 px-3 z-50 backdrop-filter backdrop-blur-lg bg-opacity-60 transition-all duration-300 ease-in-out ${
+          drawer ? "w-64 opacity-100" : "w-0 opacity-0"
+        }`}
       >
-        <div className={`flex flex-col gap-2 ${!drawer && "hidden"}`}>
+        <div className={`flex flex-col gap-2 ${drawer ? "block" : "hidden"}`}>
           <button
             className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full active:bg-blue-600 active:scale-105 transition duration-300"
             onClick={() => setModalAbout(true)}
@@ -68,14 +75,14 @@ const Navbar: FC<props> = (props) => {
           </button>
         </div>
         <p
-          className={`bottom-0 right-2 fixed text-lg font-medium ${
-            !drawer && "hidden"
+          className={`fixed bottom-0 right-2 text-lg font-medium ${
+            drawer ? "block" : "hidden"
           }`}
         >
           Created by ikhsan.
         </p>
       </div>
-      <Modal show={modalAbout} onClose={() => setModalAbout(false)}>
+      <Modal show={modalAbout} onClose={closeModal}>
         <Modal.Header>Tentang app ini.</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
@@ -88,13 +95,13 @@ const Navbar: FC<props> = (props) => {
         <Modal.Footer>
           <button
             className="bg-blue-500 text-white px-3 py-2 rounded-lg active:bg-blue-600 active:scale-105 transition duration-300"
-            onClick={() => setModalAbout(false)}
+            onClick={closeModal}
           >
             Close
           </button>
         </Modal.Footer>
       </Modal>
-      <Modal show={modalHow} onClose={() => setModalHow(false)}>
+      <Modal show={modalHow} onClose={closeModal}>
         <Modal.Header>Cara menggunakan app.</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
@@ -110,7 +117,7 @@ const Navbar: FC<props> = (props) => {
         <Modal.Footer>
           <button
             className="bg-blue-500 text-white px-3 py-2 rounded-lg active:bg-blue-600 active:scale-105 transition duration-300"
-            onClick={() => setModalHow(false)}
+            onClick={closeModal}
           >
             Close
           </button>

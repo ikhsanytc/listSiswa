@@ -29,6 +29,9 @@ importers:
       daisyui:
         specifier: ^4.10.2
         version: 4.10.2(postcss@8.4.38)
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       feather-icons:
         specifier: ^4.29.1
         version: 4.29.1
@@ -963,6 +966,9 @@ packages:
   daisyui@4.10.2:
     resolution: {integrity: sha512-eCWS1W/JPyxW9IvlgW5m0R6rp9ZhRsBTW37rvEUthckkjsV04u8XipV519OoccSA46ixhSJa3q7XLI1WUFtRCA==}
     engines: {node: '>=16.9.0'}
+
+  date-fns@3.6.0:
+    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
 
   dayjs@1.11.11:
     resolution: {integrity: sha512-okzr3f11N6WuqYtZSvm+F776mB41wRZMhKP+hc34YdW+KmtYYK9iqvHSwo2k9FEH3fhGXvOPV6yz2IcSrfRUDg==}
@@ -3107,6 +3113,8 @@ snapshots:
       postcss-js: 4.0.1(postcss@8.4.38)
     transitivePeerDependencies:
       - postcss
+
+  date-fns@3.6.0: {}
 
   dayjs@1.11.11: {}
 

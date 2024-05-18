@@ -8,36 +8,36 @@ import { motion } from "framer-motion";
 type params = {
   id: string;
 };
+
 const Edit = () => {
   const nav = useNavigate();
   const { id } = useParams<params>();
   const [user, setUser] = useState<InputsV2>();
   const { register, handleSubmit, setValue } = useForm<InputsV2>();
   const databaseJson = localStorage.getItem("data");
-  const database: InputsV2[] = databaseJson ? JSON.parse(databaseJson) : null;
+  const database: InputsV2[] = databaseJson ? JSON.parse(databaseJson) : [];
   const indexToEdit = database.findIndex(
-    (item: { id: number | string }) => item.id == id
+    (item: { id: number | string }) => item.id === id
   );
+
   useEffect(() => {
-    // console.log(indexToEdit);
     if (indexToEdit !== -1) {
-      setUser(database[indexToEdit]);
+      const userData = database[indexToEdit];
+      setUser(userData);
+      setValue("NamaSiswa", userData.NamaSiswa);
+      setValue("KelaminSiswa", userData.KelaminSiswa);
+      setValue("AgamaSiswa", userData.AgamaSiswa);
+      setValue("KelasSiswa", userData.KelasSiswa);
+      setValue("noTlpSiswa", userData.noTlpSiswa);
+      setValue("NamaAyah", userData.NamaAyah);
+      setValue("noTlpAyah", userData.noTlpAyah);
+      setValue("NamaIbu", userData.NamaIbu);
+      setValue("noTlpIbu", userData.noTlpIbu);
+      setValue("id", userData.id);
     } else {
       nav("/");
     }
-  }, []);
-  setValue("NamaSiswa", user ? user.NamaSiswa : "");
-  setValue("KelaminSiswa", user ? user.KelaminSiswa : "");
-  setValue("AgamaSiswa", user ? user.AgamaSiswa : "");
-  setValue("KelasSiswa", user ? user.KelasSiswa : "");
-  setValue("noTlpSiswa", user ? user.noTlpSiswa : 0);
-  setValue("NamaAyah", user ? user.NamaAyah : "");
-  setValue("noTlpAyah", user ? user.noTlpAyah : 0);
-  setValue("NamaIbu", user ? user.NamaIbu : "");
-  setValue("noTlpIbu", user ? user.noTlpIbu : 0);
-  setValue("id", user ? user.id : 0);
-
-  // console.log(user);
+  }, [indexToEdit, database, nav, setValue]);
 
   const onSubmit: SubmitHandler<InputsV2> = (data) => {
     if (indexToEdit !== -1) {
@@ -59,7 +59,7 @@ const Edit = () => {
         transition={{ duration: 0.2, delay: 0.4 }}
       >
         <input type="hidden" id="id" {...register("id")} />
-        <h1 className="text-xl font-bold underline underline-offset-4">
+        <h1 className="text-xl font-bold underline underline-offset-4 mb-3">
           Identitas Peserta Didik
         </h1>
         <div className="flex flex-col gap-4 pt-2">
@@ -76,7 +76,6 @@ const Edit = () => {
               maxLength={255}
               {...register("NamaSiswa")}
             />
-
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Nama Siswa
             </span>
@@ -183,7 +182,7 @@ const Edit = () => {
             </span>
           </label>
         </div>
-        <h1 className="text-xl font-bold underline underline-offset-4 pt-2 pb-2">
+        <h1 className="text-xl font-bold underline underline-offset-4 pt-2 mb-3">
           Data Ayah
         </h1>
         <div className="flex flex-col gap-4">
@@ -222,7 +221,7 @@ const Edit = () => {
             </span>
           </label>
         </div>
-        <h1 className="text-xl font-bold underline underline-offset-4 pt-2 pb-2">
+        <h1 className="text-xl font-bold underline underline-offset-4 pt-2 mb-3">
           Data Ibu
         </h1>
         <div className="flex flex-col gap-4">
