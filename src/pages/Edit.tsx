@@ -12,7 +12,7 @@ type params = {
 const Edit = () => {
   const nav = useNavigate();
   const { id } = useParams<params>();
-  const [user, setUser] = useState<InputsV2>();
+  const [_, setUser] = useState<InputsV2>();
   const { register, handleSubmit, setValue } = useForm<InputsV2>();
   const databaseJson = localStorage.getItem("data");
   const database: InputsV2[] = databaseJson ? JSON.parse(databaseJson) : [];
