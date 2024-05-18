@@ -46,4 +46,18 @@ type Inputs = {
   penghasilanWali: string;
   noTlpWali: number;
 };
-export default Inputs;
+
+interface InputsV2 {
+  id: number;
+  NamaSiswa: string;
+  KelasSiswa: string;
+  AgamaSiswa: string;
+  KelaminSiswa: string;
+  noTlpSiswa: number;
+  NamaAyah: string;
+  noTlpAyah: number;
+  NamaIbu: string;
+  noTlpIbu: number;
+}
+
+export type { Inputs, InputsV2 };

@@ -2,12 +2,12 @@ import feather from "feather-icons";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Inputs from "../types/Inputs";
+import { InputsV2 } from "../types/Inputs";
 import { motion } from "framer-motion";
 
 const Home = () => {
   const nav = useNavigate();
-  const [users, setUsers] = useState<Inputs[]>([]);
+  const [users, setUsers] = useState<InputsV2[]>([]);
   const [name, setName] = useState<string | null>(null);
   useEffect(() => {
     const databaseJson = localStorage.getItem("data");
@@ -25,12 +25,12 @@ const Home = () => {
       setUsers(database);
     }
   }, []);
-  const deleteUser = (nik: number) => {
+  const deleteUser = (id: number) => {
     if (confirm("Kamu yakin mau delete data ini?")) {
       const databaseJson = localStorage.getItem("data");
       const database: [] = databaseJson ? JSON.parse(databaseJson) : [];
       const indexToDelete = database.findIndex(
-        (item: { nik: number }) => item.nik == nik
+        (item: { id: number }) => item.id == id
       );
       if (indexToDelete !== -1) {
         database.splice(indexToDelete, 1);
@@ -62,26 +62,26 @@ const Home = () => {
                 dangerouslySetInnerHTML={{ __html: feather.icons.user.toSvg() }}
               ></div>
               <div className="flex flex-col ">
-                <p className="font-semibold">{data.CalonPesertaDidik}</p>
-                <small>{data.nik}</small>
+                <p className="font-semibold">{data.NamaSiswa}</p>
+                <small>{data.id}</small>
               </div>
             </div>
             <div className="flex gap-2">
               <div
                 dangerouslySetInnerHTML={{ __html: feather.icons.eye.toSvg() }}
-                onClick={() => nav(`/detail/${data.nik}`)}
+                onClick={() => nav(`/detail/${data.id}`)}
               ></div>
               <div
                 dangerouslySetInnerHTML={{ __html: feather.icons.edit.toSvg() }}
                 className="cursor-pointer"
-                onClick={() => nav(`/edit/${data.nik}`)}
+                onClick={() => nav(`/edit/${data.id}`)}
               ></div>
               <div
                 dangerouslySetInnerHTML={{
                   __html: feather.icons.delete.toSvg(),
                 }}
                 className="cursor-pointer"
-                onClick={() => deleteUser(data.nik)}
+                onClick={() => deleteUser(data.id)}
               ></div>
             </div>
           </div>
