@@ -2,22 +2,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import Inputs from "../types/Inputs";
+import { InputsV2 } from "../types/Inputs";
 import img from "../assets/nophoto.png";
 import { Accordion } from "flowbite-react";
 
 type params = {
-  nik: string;
+  id: string;
 };
 const Detail = () => {
-  const { nik } = useParams<params>();
+  const { id } = useParams<params>();
   const nav = useNavigate();
-  const [user, setUser] = useState<Inputs>();
+  const [user, setUser] = useState<InputsV2>();
   useEffect(() => {
     const databaseJson = localStorage.getItem("data");
-    const database: Inputs[] = databaseJson ? JSON.parse(databaseJson) : [];
+    const database: InputsV2[] = databaseJson ? JSON.parse(databaseJson) : [];
     const indexToView = database.findIndex(
-      (item: { nik: string | number }) => item.nik == nik
+      (item: { id: string | number }) => item.id == id
     );
     if (indexToView !== -1) {
       setUser(database[indexToView]);
@@ -45,7 +45,7 @@ const Detail = () => {
             />
           </div>
           <h1 className="text-center text-3xl font-semibold">
-            {user?.CalonPesertaDidik}
+            {user?.NamaSiswa}
           </h1>
         </div>
         <div className="pt-10"></div>
@@ -55,184 +55,50 @@ const Detail = () => {
           <div className="pt-4"></div>
           <Accordion>
             <Accordion.Panel>
-              <Accordion.Title>Calon Peserta Didik</Accordion.Title>
-              <Accordion.Content>{user?.CalonPesertaDidik}</Accordion.Content>
+              <Accordion.Title className="font-bold">
+                Nama Siswa
+              </Accordion.Title>
+              <Accordion.Content>{user?.NamaSiswa}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>Tempat Tanggal Lahir</Accordion.Title>
-              <Accordion.Content>{user?.tempatTglLahir}</Accordion.Content>
+              <Accordion.Title className="font-bold">
+                Jenis Kelamin
+              </Accordion.Title>
+              <Accordion.Content>{user?.KelaminSiswa}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>Jenis Kelamin</Accordion.Title>
-              <Accordion.Content>{user?.jenisKelamin}</Accordion.Content>
+              <Accordion.Title className="font-bold">Kelas</Accordion.Title>
+              <Accordion.Content>{user?.KelasSiswa}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>Agama</Accordion.Title>
-              <Accordion.Content>{user?.agama}</Accordion.Content>
+              <Accordion.Title className="font-bold">Agama</Accordion.Title>
+              <Accordion.Content>{user?.AgamaSiswa}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>Asal Sekolah</Accordion.Title>
-              <Accordion.Content>{user?.asalSekolah}</Accordion.Content>
+              <Accordion.Title className="font-bold">
+                No Tlp Siswa
+              </Accordion.Title>
+              <Accordion.Content>+62 {user?.noTlpSiswa}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>NPSN</Accordion.Title>
-              <Accordion.Content>{user?.npsn}</Accordion.Content>
+              <Accordion.Title className="font-bold">Nama Ayah</Accordion.Title>
+              <Accordion.Content>{user?.NamaAyah}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>No Seri Ijazah</Accordion.Title>
-              <Accordion.Content>{user?.noSeriIjazah}</Accordion.Content>
+              <Accordion.Title className="font-bold">
+                No Tlp Ayah
+              </Accordion.Title>
+              <Accordion.Content>+62 {user?.noTlpAyah}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>NIK</Accordion.Title>
-              <Accordion.Content>{user?.nik}</Accordion.Content>
+              <Accordion.Title className="font-bold">Nama Ibu</Accordion.Title>
+              <Accordion.Content>{user?.NamaIbu}</Accordion.Content>
             </Accordion.Panel>
             <Accordion.Panel>
-              <Accordion.Title>Alamat</Accordion.Title>
-              <Accordion.Content>{user?.alamat}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Kode Pos</Accordion.Title>
-              <Accordion.Content>{user?.kodePos}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>RT</Accordion.Title>
-              <Accordion.Content>{user?.rt}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>RW</Accordion.Title>
-              <Accordion.Content>{user?.rw}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Kelurahan</Accordion.Title>
-              <Accordion.Content>{user?.kelurahan}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Kecamatan</Accordion.Title>
-              <Accordion.Content>{user?.kecamatan}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Kota</Accordion.Title>
-              <Accordion.Content>{user?.kota}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>No Tlp</Accordion.Title>
-              <Accordion.Content>{user?.noTlp}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Alat Transportasi</Accordion.Title>
-              <Accordion.Content>{user?.alatTransportasi}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Email</Accordion.Title>
-              <Accordion.Content>{user?.email}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Penerima Kps</Accordion.Title>
-              <Accordion.Content>{user?.penerimaKps}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>No Kps</Accordion.Title>
-              <Accordion.Content>{user?.noKps}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Tinggi Badan</Accordion.Title>
-              <Accordion.Content>{user?.tinggiBadan}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Berat Badan</Accordion.Title>
-              <Accordion.Content>{user?.beratBedan}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Jarak Tempuh Tinggal Ke Sekolah</Accordion.Title>
-              <Accordion.Content>{user?.jarakTempuh}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Waktu Tempuh Tinggal Ke Sekolah</Accordion.Title>
-              <Accordion.Content>{user?.waktuTempuh}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Prestasi</Accordion.Title>
-              <Accordion.Content>{user?.jenisPrestasi}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Tingkat Prestasi</Accordion.Title>
-              <Accordion.Content>{user?.tingkatPres}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Tahun Prestasi</Accordion.Title>
-              <Accordion.Content>{user?.tahunPres}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Beasiswa</Accordion.Title>
-              <Accordion.Content>{user?.jenisBeasiswa}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Sumber Beasiswa</Accordion.Title>
-              <Accordion.Content>{user?.sumberBea}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Tahun Beasiswa</Accordion.Title>
-              <Accordion.Content>{user?.tahunBea}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Nama Ayah</Accordion.Title>
-              <Accordion.Content>{user?.namaAyah}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Pekerjaan Ayah</Accordion.Title>
-              <Accordion.Content>{user?.pekerjaanAyah}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Pendidikan Ayah</Accordion.Title>
-              <Accordion.Content>{user?.pendidikanAyah}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Penghasilan Ayah</Accordion.Title>
-              <Accordion.Content>{user?.penghasilanAyah}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>No Tlp Ayah</Accordion.Title>
-              <Accordion.Content>{user?.noTlpAyah}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Nama Ibu</Accordion.Title>
-              <Accordion.Content>{user?.namaIbu}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Pekerjaan Ibu</Accordion.Title>
-              <Accordion.Content>{user?.pekerjaanIbu}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Pendidikan Ibu</Accordion.Title>
-              <Accordion.Content>{user?.pendidikanIbu}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Penghasilan Ibu</Accordion.Title>
-              <Accordion.Content>{user?.penghasilanIbu}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>No Tlp Ibu</Accordion.Title>
-              <Accordion.Content>{user?.noTlpIbu}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Nama Wali</Accordion.Title>
-              <Accordion.Content>{user?.namaWali}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Pekerjaan Wali</Accordion.Title>
-              <Accordion.Content>{user?.pekerjaanWali}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Pendidikan Wali</Accordion.Title>
-              <Accordion.Content>{user?.pendidikanWali}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>Penghasilan Wali</Accordion.Title>
-              <Accordion.Content>{user?.penghasilanWali}</Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title>No Tlp Wali</Accordion.Title>
-              <Accordion.Content>{user?.noTlpWali}</Accordion.Content>
+              <Accordion.Title className="font-bold">
+                No Tlp Ibu
+              </Accordion.Title>
+              <Accordion.Content>+62 {user?.noTlpIbu}</Accordion.Content>
             </Accordion.Panel>
           </Accordion>
         </div>
