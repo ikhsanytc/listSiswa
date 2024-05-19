@@ -35,6 +35,9 @@ const Detail = () => {
 
   const handleCommentSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const commentData: CommentT[] = JSON.parse(
+      localStorage.getItem("comment") || "[]"
+    );
     if (textareaRef.current && textareaRef.current.value && user) {
       const newComment: CommentT = {
         id: user.id,
@@ -43,8 +46,9 @@ const Detail = () => {
         time: new Date().toISOString(),
       };
 
-      const updatedComments = [...(comments || []), newComment];
-      localStorage.setItem("comment", JSON.stringify(updatedComments));
+      commentData.push(newComment);
+      localStorage.setItem("comment", JSON.stringify(commentData));
+      const updatedComments = commentData.filter((item) => item.id === id);
       setComments(updatedComments);
       textareaRef.current.value = "";
     }

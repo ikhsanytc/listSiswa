@@ -73,6 +73,12 @@ const Navbar: FC<NavbarProps> = ({ back }) => {
           >
             Cara menggunakan app.
           </button>
+          <button
+            className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full active:bg-blue-600 active:scale-105 transition duration-300"
+            onClick={() => nav("/siswaAll")}
+          >
+            Lihat seluruh siswa.
+          </button>
         </div>
         <p
           className={`fixed bottom-0 right-2 text-lg font-medium ${
