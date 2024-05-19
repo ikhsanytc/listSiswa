@@ -1,55 +1,72 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import { useEffect, useRef, useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { CommentT, InputsV2 } from "../types/Inputs";
-import img from "../assets/nophoto.png";
-import { Accordion } from "flowbite-react";
+import { Accordion, Modal } from "flowbite-react";
 import feather from "feather-icons";
-import { timeAgo } from "../libs/service";
+
+import Navbar from "../components/Navbar";
+import img from "../assets/nophoto.png";
+import { CommentT, InputsV2 } from "../types/Inputs";
+import {
+  generateRandomToken,
+  htmlConvert1,
+  htmlConvert2,
+  timeAgo,
+} from "../libs/service";
 
 const Detail = () => {
   const { id } = useParams<{ id: string }>();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const komentarEdit = useRef<HTMLTextAreaElement>(null);
+
   const [user, setUser] = useState<InputsV2>();
-  const [comments, setComments] = useState<CommentT[] | null>(null);
+  const [comments, setComments] = useState<CommentT[]>([]);
+  const [commentToEdit, setCommentToEdit] = useState<CommentT | null>(null);
+  const [modalComment, setModalComment] = useState(false);
 
   useEffect(() => {
-    const database: InputsV2[] = JSON.parse(
-      localStorage.getItem("data") || "[]"
-    );
-    const commentData: CommentT[] = JSON.parse(
-      localStorage.getItem("comment") || "[]"
-    );
-    const userComments = commentData.filter((comment) => comment.id === id);
-    const userData = database.find((user) => user.id === id);
+    const loadUserData = () => {
+      const database: InputsV2[] = JSON.parse(
+        localStorage.getItem("data") || "[]"
+      );
+      const commentData: CommentT[] = JSON.parse(
+        localStorage.getItem("comment") || "[]"
+      );
 
-    if (userData) {
-      setUser(userData);
-      setComments(userComments.length ? userComments : null);
-    } else {
-      navigate("/");
-    }
+      const userData = database.find((user) => user.id === id);
+      const userComments = commentData.filter((comment) => comment.id === id);
+
+      if (userData) {
+        setUser(userData);
+        setComments(userComments);
+      } else {
+        navigate("/");
+      }
+    };
+
+    loadUserData();
   }, [id, navigate]);
 
   const handleCommentSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const commentData: CommentT[] = JSON.parse(
-      localStorage.getItem("comment") || "[]"
-    );
     if (textareaRef.current && textareaRef.current.value && user) {
+      const commentData: CommentT[] = JSON.parse(
+        localStorage.getItem("comment") || "[]"
+      );
+
       const newComment: CommentT = {
         id: user.id,
+        idComment: generateRandomToken(5),
         comment: textareaRef.current.value.replace(/\n/g, "<br>"),
         name: user.NamaSiswa,
         time: new Date().toISOString(),
       };
 
-      commentData.push(newComment);
-      localStorage.setItem("comment", JSON.stringify(commentData));
-      const updatedComments = commentData.filter((item) => item.id === id);
-      setComments(updatedComments);
+      const updatedCommentData = [...commentData, newComment];
+      localStorage.setItem("comment", JSON.stringify(updatedCommentData));
+
+      setComments((prevComments) => [...prevComments, newComment]);
       textareaRef.current.value = "";
     }
   };
@@ -59,7 +76,52 @@ const Detail = () => {
       JSON.parse(localStorage.getItem("comment") || "[]") as CommentT[]
     ).filter((comment) => comment.id !== id);
     localStorage.setItem("comment", JSON.stringify(updatedComments));
-    setComments(null);
+    setComments([]);
+  };
+
+  const handleDelete = (idComment: string | number) => {
+    const commentData: CommentT[] = JSON.parse(
+      localStorage.getItem("comment") || "[]"
+    );
+    const updatedCommentData = commentData.filter(
+      (comment) => comment.idComment !== idComment
+    );
+    localStorage.setItem("comment", JSON.stringify(updatedCommentData));
+    setComments(updatedCommentData.filter((comment) => comment.id === id));
+  };
+
+  const handleEdit = (idComment: string | number) => {
+    const commentData: CommentT[] = JSON.parse(
+      localStorage.getItem("comment") || "[]"
+    );
+    const comment = commentData.find((item) => item.idComment === idComment);
+    if (comment) {
+      setCommentToEdit(comment);
+      setModalComment(true);
+    }
+  };
+
+  const handleEditSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (komentarEdit.current && commentToEdit) {
+      const commentData: CommentT[] = JSON.parse(
+        localStorage.getItem("comment") || "[]"
+      );
+      const updatedComment = {
+        ...commentToEdit,
+        comment: htmlConvert2(komentarEdit.current.value),
+        time: new Date().toISOString(),
+      };
+
+      const updatedCommentData = commentData.map((comment) =>
+        comment.idComment === commentToEdit.idComment ? updatedComment : comment
+      );
+
+      localStorage.setItem("comment", JSON.stringify(updatedCommentData));
+      setComments(updatedCommentData.filter((comment) => comment.id === id));
+      setModalComment(false);
+      setCommentToEdit(null);
+    }
   };
 
   return (
@@ -146,9 +208,9 @@ const Detail = () => {
           <hr className="border-[3px] rounded-full border-gray-300 mt-2" />
 
           <div className="pt-4 flex flex-col gap-3">
-            {comments?.map((comment, idx) => (
+            {comments.map((comment, idx) => (
               <motion.div
-                key={idx}
+                key={comment.idComment}
                 initial={{ y: 120, opacity: 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ y: 120, opacity: 0 }}
@@ -161,14 +223,30 @@ const Detail = () => {
                     {timeAgo(comment.time)}
                   </p>
                 </div>
-                <p
-                  className="text-gray-300 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: comment.comment }}
-                ></p>
+                <div className="flex justify-between items-end">
+                  <p
+                    className="text-gray-300 leading-relaxed break-all w-32"
+                    dangerouslySetInnerHTML={{ __html: comment.comment }}
+                  ></p>
+                  <div className="flex gap-2">
+                    <a
+                      className="cursor-pointer text-sm underline"
+                      onClick={() => handleDelete(comment.idComment)}
+                    >
+                      Delete
+                    </a>
+                    <a
+                      onClick={() => handleEdit(comment.idComment)}
+                      className="cursor-pointer text-sm underline"
+                    >
+                      Edit
+                    </a>
+                  </div>
+                </div>
               </motion.div>
             ))}
 
-            {comments && (
+            {comments.length > 0 && (
               <motion.button
                 initial={{ opacity: 0, x: -440 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -188,7 +266,7 @@ const Detail = () => {
                 placeholder="Komentar..."
                 ref={textareaRef}
               ></textarea>
-              <button type="submit" className="">
+              <button type="submit">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: feather.icons.send.toSvg(),
@@ -201,6 +279,52 @@ const Detail = () => {
 
         <div className="p-10"></div>
       </motion.section>
+      <Modal show={modalComment} onClose={() => setModalComment(false)}>
+        <form onSubmit={handleEditSubmit}>
+          <Modal.Header>Komentar Edit</Modal.Header>
+          <Modal.Body>
+            {commentToEdit && (
+              <motion.div
+                initial={{ y: 120, opacity: 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ y: 120, opacity: 0 }}
+                transition={{ duration: 0.2, delay: 0.2 }}
+                className="bg-gray-600 p-2 w-full rounded text-white border-2 border-gray-400 shadow-lg"
+              >
+                <div className="flex justify-between items-center">
+                  <h1 className="pb-2 font-semibold">Komentar</h1>
+                  <p className="text-xs text-gray-200">
+                    {timeAgo(commentToEdit.time)}
+                  </p>
+                </div>
+                <div className="flex justify-between">
+                  <textarea
+                    id="komentar"
+                    ref={komentarEdit}
+                    className="text-gray-300 bg-transparent outline-none border border-transparent rounded-lg"
+                    defaultValue={htmlConvert1(commentToEdit.comment)}
+                  ></textarea>
+                </div>
+              </motion.div>
+            )}
+          </Modal.Body>
+          <Modal.Footer className="flex justify-between">
+            <button
+              className="bg-gray-500 text-white px-3 py-2 rounded-lg active:bg-gray-600 active:scale-105 transition duration-300"
+              type="button"
+              onClick={() => setModalComment(false)}
+            >
+              Close
+            </button>
+            <button
+              className="bg-blue-500 text-white px-3 py-2 rounded-lg active:bg-blue-600 active:scale-105 transition duration-300"
+              type="submit"
+            >
+              Save
+            </button>
+          </Modal.Footer>
+        </form>
+      </Modal>
     </>
   );
 };

@@ -7,7 +7,7 @@ import { timeAgo } from "../libs/service";
 
 function SiswaAll() {
   const [users, setUsers] = useState<InputsV2[]>();
-  const [comments, setComments] = useState<CommentT[]>();
+  const [comments, setComments] = useState<CommentT[] | null>();
   const [modalComment, setModalComment] = useState(false);
   useEffect(() => {
     const database: InputsV2[] = JSON.parse(
@@ -20,7 +20,7 @@ function SiswaAll() {
       localStorage.getItem("comment") || "[]"
     );
     const filteredData = commentData.filter((item) => item.id === id);
-    setComments(filteredData);
+    setComments(filteredData.length == 0 ? null : filteredData);
     setModalComment(true);
   }
   return (
@@ -136,6 +136,20 @@ function SiswaAll() {
                 ></p>
               </motion.div>
             ))}
+          {!comments && (
+            <div
+              role="alert"
+              className="rounded border-s-4 border-red-500 bg-red-50 p-4"
+            >
+              <strong className="block font-medium text-red-800">
+                Tidak ada apa apa di sini.
+              </strong>
+
+              <p className="mt-2 text-sm text-red-700">
+                Komentar pada siswa ini kosong!
+              </p>
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <button

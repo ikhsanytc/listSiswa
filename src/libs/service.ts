@@ -13,4 +13,14 @@ function timeAgo(date: string) {
   return formatDistanceToNow(new Date(date), { addSuffix: true });
 }
 
-export { generateRandomToken, timeAgo };
+function htmlConvert1(text: string) {
+  const newText = text.replace(/<br\s*\/?>/gi, "\n");
+  return newText;
+}
+
+function htmlConvert2(text: string) {
+  const newText = text.replace(/\n/g, "<br>");
+  return newText;
+}
+
+export { generateRandomToken, timeAgo, htmlConvert1, htmlConvert2 };

@@ -6,6 +6,7 @@ import Detail from "../pages/Detail";
 import { AnimatePresence } from "framer-motion";
 import Notfound from "../pages/Notfound";
 import SiswaAll from "../pages/SiswaAll";
+import Debug from "../pages/Debug";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -18,6 +19,7 @@ const AnimatedRoutes = () => {
         <Route path="/edit/:id" element={<Edit />}></Route>
         <Route path="/detail/:id" element={<Detail />}></Route>
         <Route path="/siswaAll" element={<SiswaAll />}></Route>
+        <Route path="/debug" element={<Debug />}></Route>
         <Route path="*" element={<Notfound />}></Route>
       </Routes>
     </AnimatePresence>

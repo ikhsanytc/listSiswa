@@ -62,6 +62,7 @@ interface InputsV2 {
 
 interface CommentT {
   id: number | string;
+  idComment: number | string;
   name: string;
   comment: string;
   time: string;

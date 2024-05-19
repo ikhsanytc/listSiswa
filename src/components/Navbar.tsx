@@ -32,7 +32,14 @@ const Navbar: FC<NavbarProps> = ({ back }) => {
     setModalAbout(false);
     setModalHow(false);
   };
-
+  const easterEgg = () => {
+    const passwd = prompt("Password?");
+    if (passwd === "1sampai500") {
+      nav("/debug");
+    } else {
+      alert("Salah!");
+    }
+  };
   return (
     <>
       <nav className="bg-white border flex justify-between fixed top-0 w-full p-3 shadow z-40">
@@ -83,7 +90,8 @@ const Navbar: FC<NavbarProps> = ({ back }) => {
         <p
           className={`fixed bottom-0 right-2 text-lg font-medium ${
             drawer ? "block" : "hidden"
-          }`}
+          } cursor-text`}
+          onClick={easterEgg}
         >
           Created by ikhsan.
         </p>
